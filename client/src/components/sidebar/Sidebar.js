@@ -1,62 +1,56 @@
 import React from 'react';
 import './Sidebar.css';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
         <div className="sidebar">
             <div className="sidebar-header">
-                <img src="https://via.placeholder.com/40" alt="User" />
+                <img src="https://media.istockphoto.com/id/1485546774/photo/bald-man-smiling-at-camera-standing-with-arms-crossed.webp?a=1&b=1&s=612x612&w=0&k=20&c=0ids4O4zdfqqB3DcwDY9SGuKOEgTTlpW4csklV0v8t0=" alt="User" />
                 <span>John Doe</span>
             </div>
             <ul className="sidebar-menu">
                 <li>
-                    <Link to="/dashboard" className="active">
+                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-home"></i>
                         <span>Dashboard</span>
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/earnings">
+                    <NavLink to="/earnings" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-wallet"></i>
                         <span>Earnings</span>
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/referrals">
+                    <NavLink to="/referrals" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-users"></i>
                         <span>Referrals</span>
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/history">
-                        <i className="fas fa-history"></i>
-                        <span>History</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/profile">
+                    <NavLink to="/messages" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-user"></i>
-                        <span>Profile</span>
-                    </Link>
+                        <span>Messages</span>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/settings">
+                    <NavLink to="/settings" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-cog"></i>
                         <span>Settings</span>
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/help">
+                    <NavLink to="/help" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-question-circle"></i>
                         <span>Help</span>
-                    </Link>
+                    </NavLink>
                 </li>
                 <li>
-                    <Link to="/logout">
+                    <NavLink to="/logout" className={({ isActive }) => isActive ? 'active' : ''}>
                         <i className="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
-                    </Link>
+                    </NavLink>
                 </li>
             </ul>
         </div>

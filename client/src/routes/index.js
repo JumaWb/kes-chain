@@ -5,6 +5,11 @@ import LandingPage from '../pages/landing/LandingPage';
 import Login from '../components/login/Login';
 import Signup from '../components/signup/SignUp';
 import Dashboard from '../pages/dashboard/Dashboard';
+import Earnings from '../pages/earnings/Earnings';
+import Referrals from '../pages/referrals/Referrals';
+import Settings from '../pages/settings/Settings';
+import Messages from '../pages/messages/Messages';
+import Help from '../pages/help/Help';
 
 const router = createBrowserRouter([
   {
@@ -26,6 +31,26 @@ const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Dashboard />
+      },
+      {
+        path: 'earnings',
+        element: <Earnings />
+      },
+      {
+        path: 'referrals',
+        element: <Referrals />
+      },
+      {
+        path: 'settings',
+        element: <Settings />
+      },
+      {
+        path: 'messages',
+        element: <Messages />
+      },
+      {
+        path: 'help',
+        element: <Help />
       }
     ]
   }
