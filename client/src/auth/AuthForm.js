@@ -1,6 +1,7 @@
 // src/services/authService.js
 
 const API_BASE_URL = 'http://127.0.0.1:5000/api'; 
+  //const API_BASE_URL = 'https://keschain.stepcashier.com/';
 
 // LOGIN
 export const login = async (credentials) => {
@@ -19,9 +20,14 @@ export const login = async (credentials) => {
 
   const data = await res.json();
 
-  // Optionally store token
+  // ✅ Store token
   if (data.token) {
     localStorage.setItem('token', data.token);
+  }
+
+  // ✅ Store user object (make sure your backend returns this!)
+  if (data.user) {
+    localStorage.setItem('user', JSON.stringify(data.user));
   }
 
   return data;
@@ -48,10 +54,12 @@ export const signup = async (userData) => {
 // LOGOUT
 export const logout = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('user'); // ✅ Also remove user data on logout
 };
 
 // Get current user
 export const getCurrentUser = () => {
   const token = localStorage.getItem('token');
-  return token ? { token } : null;
+  const user = localStorage.getItem('user');
+  return token && user ? { token, user: JSON.parse(user) } : null;
 };

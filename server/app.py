@@ -1,11 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from models import db, User
+from seed import get_dashboard_data
 from flask_migrate import Migrate
 
 app = Flask(__name__)
-
-
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
@@ -13,7 +12,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
-
 
 with app.app_context():
     db.create_all()
@@ -54,6 +52,12 @@ def login():
         'message': 'Login successful',
         'user': user.to_dict()
     }), 200
+
+@app.route('/api/dashboard', methods=['GET'])
+def dashboard():
+    phone = request.args.get('phone')
+    data = get_dashboard_data(phone)
+    return jsonify(data), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
