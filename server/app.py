@@ -1,21 +1,36 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from models import db, User
 from seed import get_dashboard_data
 from flask_migrate import Migrate
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 CORS(app)
 
+# Configurations
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Upload configuration
+UPLOAD_FOLDER = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Initialize extensionss
 db.init_app(app)
 migrate = Migrate(app, db)
 
 with app.app_context():
     db.create_all()
 
+# Helper function
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Routes
 @app.route('/api/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -59,5 +74,29 @@ def dashboard():
     data = get_dashboard_data(phone)
     return jsonify(data), 200
 
-if __name__ == '__main__':
+@app.route('/api/upload-avatar', methods=['POST'])
+def upload_avatar():
+    if 'avatar' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['avatar']
+
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        avatar_url = f'/uploads/{filename}'  # Local path to serve
+        return jsonify({'avatarUrl': avatar_url}), 200
+
+    return jsonify({'error': 'Invalid file type'}), 400
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+if __name__ == '__main__': 
     app.run(debug=True)
