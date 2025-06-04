@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import Sidebar from '../../components/sidebar/Sidebar';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUsers, faUserCheck, faClock, faCoins,
-  faCopy, faCheck, faDownload, faQrcode,
-   faEnvelope
+  faCopy, faCheck, faDownload, faQrcode, faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  faWhatsapp, faFacebookF, faTwitter,
-  faTelegram
+  faWhatsapp, faFacebookF, faTwitter, faTelegram
 } from '@fortawesome/free-brands-svg-icons';
 import './Referrals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -27,6 +26,7 @@ const Referrals = () => {
   const [timeFilter, setTimeFilter] = useState('all');
   const [copied, setCopied] = useState(false);
   const referralLink = 'https://keschain.co.ke/ref/johndoe123';
+  const navigate = useNavigate();
 
   const copyReferralLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -50,13 +50,17 @@ const Referrals = () => {
     alert('Exporting referrals data...');
   };
 
-  const handleAction = (action, name) => {
-    alert(`${action} ${name}`);
+  const handleAction = (action, name, phone) => {
+    if (action === 'Message') {
+      navigate(`/messages?user=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}`);
+    } else {
+      alert(`${action} ${name}`);
+    }
   };
 
   return (
     <div className="container-fluid p-0">
-        <Sidebar />
+      <Sidebar />
       <div className="main-content">
         <div className="referral-content">
           <div className="referral-header">
@@ -206,7 +210,8 @@ const Referrals = () => {
                                 : referral.status === 'inactive'
                                 ? 'Reinvite'
                                 : 'Message',
-                              referral.name
+                              referral.name,
+                              referral.phone
                             )
                           }
                         >
@@ -223,6 +228,7 @@ const Referrals = () => {
               </table>
             </div>
           </div>
+
         </div>
       </div>
     </div>

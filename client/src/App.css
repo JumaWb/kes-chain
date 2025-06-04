@@ -1,21 +1,11 @@
-/* App.css */
-.loading-spinner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Define your CSS variables here */
+:root {
+  --sidebar: #2c3e50;
+  --sidebar-hover: #34495e;
+  --primary: #3498db;
 }
 
-.custom-spinner {
-  width: 60px;
-  height: 60px;
-  border: 6px solid;
-  border-color: #00c9a7 transparent #0d6efd transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
